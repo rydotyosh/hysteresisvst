@@ -8,6 +8,7 @@
 // Description  : Hysteresis filter
 //
 // (c) Ryogo Yoshimura, All Rights Reserved
+// MIT License
 //-------------------------------------------------------------------------------------------------------
 
 //#include "hysteresis.h"

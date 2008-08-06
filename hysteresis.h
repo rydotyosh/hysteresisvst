@@ -4,10 +4,11 @@
 //
 // Category     : VST filter
 // Filename     : hysteresis.h
-// Created by   : Ryogo Yoshimura
+// Created by   : Ryogo Yoshimura, Takuya Hashimoto
 // Description  : Hysteresis filter
 //
 // (c) Ryogo Yoshimura, All Rights Reserved
+// MIT License
 //-------------------------------------------------------------------------------------------------------
 
 #pragma once
