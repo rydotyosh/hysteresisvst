@@ -1,11 +1,11 @@
-ƒ_ƒEƒ“ƒ[ƒh‚ ‚è‚ª‚Æ‚¤‚²‚´‚¢‚Ü‚·B
+ï»¿ãƒ€ã‚¦ãƒ³ãƒ­ãƒ¼ãƒ‰ã‚ã‚ŠãŒã¨ã†ã”ã–ã„ã¾ã™ã€‚
 
-‚±‚ÌVSTƒvƒ‰ƒOƒCƒ“‚ÍAƒqƒXƒeƒŠƒVƒX‚ÌPreisachƒ‚ƒfƒ‹‚ðŽg‚Á‚½ƒfƒBƒXƒg[ƒVƒ‡ƒ“‚Å‚·B
+ã“ã®VSTãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã¯ã€ãƒ’ã‚¹ãƒ†ãƒªã‚·ã‚¹ã®Preisachãƒ¢ãƒ‡ãƒ«ã‚’ä½¿ã£ãŸãƒ‡ã‚£ã‚¹ãƒˆãƒ¼ã‚·ãƒ§ãƒ³ã§ã™ã€‚
 
-ƒrƒ‹ƒh‚·‚é‚É‚ÍASteinberg‚ÌVST SDK Version 2.4‚ª•K—v‚Å‚·B
-SDK‚ðƒrƒ‹ƒh‚µ‚Älibƒtƒ@ƒCƒ‹‚ðì‚è‚Ü‚·B‚Å‚«‚½lib‚ð‚±‚ÌƒvƒƒWƒFƒNƒg‚Ìƒ‹[ƒgƒfƒBƒŒƒNƒgƒŠ‚É“ü‚ê‚Ü‚·B
-SDK‚Ìincludeƒtƒ@ƒCƒ‹‚ð‚±‚ÌƒvƒƒWƒFƒNƒg‚ÌvstƒfƒBƒŒƒNƒgƒŠ‚É“ü‚ê‚Ü‚·B
-ƒfƒBƒŒƒNƒgƒŠƒcƒŠ[‚Í‚±‚ñ‚ÈŠ´‚¶‚É‚È‚é‚Í‚¸B
+ãƒ“ãƒ«ãƒ‰ã™ã‚‹ã«ã¯ã€Steinbergã®VST SDK Version 2.4ãŒå¿…è¦ã§ã™ã€‚
+SDKã‚’ãƒ“ãƒ«ãƒ‰ã—ã¦libãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œã‚Šã¾ã™ã€‚ã§ããŸlibã‚’ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ«ãƒ¼ãƒˆãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å…¥ã‚Œã¾ã™ã€‚
+SDKã®includeãƒ•ã‚¡ã‚¤ãƒ«ã‚’ã“ã®ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®vstãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªã«å…¥ã‚Œã¾ã™ã€‚
+ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªãƒ„ãƒªãƒ¼ã¯ã“ã‚“ãªæ„Ÿã˜ã«ãªã‚‹ã¯ãšã€‚
 
 hysteresisvst
 	vst
