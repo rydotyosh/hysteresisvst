@@ -4,11 +4,10 @@
 //
 // Category     : VST filter
 // Filename     : hysteresis.h
-// Created by   : Ryogo Yoshimura, Takuya Hashimoto
+// Created by   : Ryogo Yoshimura
 // Description  : Hysteresis filter
 //
 // (c) Ryogo Yoshimura, All Rights Reserved
-// MIT License
 //-------------------------------------------------------------------------------------------------------
 
 #pragma once
@@ -17,7 +16,7 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
-#include <cthread.h>
+#include <boost/thread/thread.hpp>
 
 extern void* hInstance;
 
@@ -27,9 +26,10 @@ enum
 	kNumPrograms = 16,
 
 	// Parameters Tags
-	kGain=0,
-	kNdiv,
+	kPreGain=0,
+	kBoost,
 	kParam1,
+	kPostGain,
 
 	kNumParams
 };
@@ -40,9 +40,10 @@ class Hysteresis;
 class Param
 {
 public:
-	float fGain;
-	int iNdiv;
+	float fPreGain;
+	int iBoost;
 	float fParam1;
+	float fPostGain;
 };
 
 //------------------------------------------------------------------------
@@ -68,7 +69,6 @@ public:
 	{
 		N=n;
 		multirangerelays.resize(N-1);
-		//mu.resize(N);
 		genmu();
 	}
 	void genmu()
@@ -112,19 +112,32 @@ public:
 			multirangerelays[s]=0;
 		}
 	}
-	float op(float x)
+	double opi(int i)
+	{
+		if(i<0)i=0;
+		if(i>=N)i=N-1;
+		
+		double sum=0;
+		for(int s=0;s<i;++s)
+		{
+			multirangerelays[s]=std::max<int>(multirangerelays[s],i-s-1);
+			//sum+=multirangerelays[s]*mu[i-s];
+			//if(multirangerelays[s]>=0&&multirangerelays[s]<mu.size())
+			if(multirangerelays[s]<mu.size())
+				sum+=mu[multirangerelays[s]];
+		}
+		for(int s=i;s<N-1;++s)
+			multirangerelays[s]=0;
+		
+		return sum/mumax;
+	}
+	/*double op(double x)
 	{
 		int i=x*N;
 		if(i<0)i=0;
 		if(i>=N)i=N-1;
 		
-		/*double sum=0;
-		for(int s=0;s<i;++s)
-			sum+=multirangerelays[s]=std::max<int>(multirangerelays[s],i-s);
-		for(int s=i;s<N-1;++s)
-			multirangerelays[s]=0;
-		
-		return sum/((double)N*(N-1))*2;*/
+
 		double sum=0;
 		for(int s=0;s<i;++s)
 		{
@@ -136,6 +149,58 @@ public:
 			multirangerelays[s]=0;
 		
 		return sum/mumax;
+	}*/
+};
+
+//hysteresis linear interpolate
+class hyslip
+{
+private:
+	hys h;
+	double tmp[2];
+	int N;
+	int prev;
+public:
+
+	hyslip()
+	{
+		N=0;
+	}
+	void resize(int n)
+	{
+		N=n;
+		h.resize(N);
+		h.genmu();
+	}
+	void inithalf()
+	{
+		h.inithalf();
+		prev=-100;
+	}
+	double op(double x)
+	{
+		int i=(int)floor(x*N);
+
+		if(prev<i)
+		{
+			tmp[0]=h.opi(i);
+			hys g=h;
+			tmp[1]=g.opi(i+1);
+			prev=i;
+		}
+		if(i<prev)
+		{
+			tmp[1]=h.opi(i+1);
+			hys g=h;
+			tmp[0]=g.opi(i);
+			prev=i;
+		}
+		double j=x*N-i;
+		return tmp[0]*(1-j)+tmp[1]*j;
+	}
+	void setparam1(double p)
+	{
+		h.setparam1(p);
 	}
 };
 
@@ -189,22 +254,24 @@ protected:
 
 	HysteresisProgram* programs;
 
-	void setGain(float g);
-	float getGain();
-	void setNdiv(float n);
-	float getNdiv();
+	void setPreGain(float g);
+	float getPreGain();
+	void setBoost(float n);
+	float getBoost();
 	void setParam1(float p);
 	float getParam1();
+	void setPostGain(float g);
+	float getPostGain();
 
 	void setfilter();
 
 	void resethysteresis();
 
-	hys internalhysteresis[2];
+	hyslip internalhysteresis[2];
 
 	Param param;
 
-	Rydot::criticalsection cs;
+	boost::mutex mtx;
 };
 
 
