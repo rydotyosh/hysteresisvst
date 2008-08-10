@@ -8,10 +8,10 @@
 // Description  : Hysteresis filter
 //
 // (c) Ryogo Yoshimura, All Rights Reserved
+// MIT License
 //-------------------------------------------------------------------------------------------------------
 
 #include "hysteresis.h"
-//#include "hysteresis.cpp"
 
 #ifdef _DEBUG
 #pragma comment(lib,"vstbased.lib")
