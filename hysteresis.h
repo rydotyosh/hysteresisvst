@@ -4,10 +4,11 @@
 //
 // Category     : VST filter
 // Filename     : hysteresis.h
-// Created by   : Ryogo Yoshimura
+// Created by   : Ryogo Yoshimura, Takuya Hashimoto
 // Description  : Hysteresis filter
 //
-// (c) Ryogo Yoshimura, All Rights Reserved
+// (c) Ryogo Yoshimura, Takuya Hashimoto, All Rights Reserved
+// MIT License
 //-------------------------------------------------------------------------------------------------------
 
 #pragma once
@@ -17,6 +18,7 @@
 #include <algorithm>
 #include <math.h>
 #include <boost/thread/thread.hpp>
+#include <fstream>
 
 extern void* hInstance;
 
@@ -26,10 +28,13 @@ enum
 	kNumPrograms = 16,
 
 	// Parameters Tags
-	kPreGain=0,
+	kInputGain=0,
+	kFeedbackLoop,
+	kPreGain,
 	kBoost,
 	kParam1,
 	kPostGain,
+	kOutputGain,
 
 	kNumParams
 };
@@ -40,10 +45,13 @@ class Hysteresis;
 class Param
 {
 public:
+	float fInputGain;
+	int iFeedbackLoop;
 	float fPreGain;
 	int iBoost;
 	float fParam1;
 	float fPostGain;
+	float fOutputGain;
 };
 
 //------------------------------------------------------------------------
@@ -64,7 +72,7 @@ public:
 	{
 		N=0;
 	}
-	void setparam1(float p){param1=p;genmu();}
+	void setparam1(double p){param1=p;genmu();}
 	void resize(int n)
 	{
 		N=n;
@@ -105,7 +113,7 @@ public:
 	{
 		for(int s=0;s<N/2;++s)
 		{
-			multirangerelays[s]=2*(N/2-s)+1;
+			multirangerelays[s]=2*(N/2-s)-1;
 		}
 		for(int s=N/2;s<N-1;++s)
 		{
@@ -121,10 +129,14 @@ public:
 		for(int s=0;s<i;++s)
 		{
 			multirangerelays[s]=std::max<int>(multirangerelays[s],i-s-1);
-			//sum+=multirangerelays[s]*mu[i-s];
-			//if(multirangerelays[s]>=0&&multirangerelays[s]<mu.size())
-			if(multirangerelays[s]<mu.size())
+			//if(multirangerelays[s]<(int)mu.size())
 				sum+=mu[multirangerelays[s]];
+			/*else
+			{
+				std::ofstream of("C:\\Users\\USER\\Desktop\\hysteresisvst\\hysteresis.dbg.txt");
+				//printf("err!\n");
+				of<<"multirangerelays[s]>=(int)mu.size(),"<<multirangerelays[s]<<","<<mu.size()<<"\n";
+			}*/
 		}
 		for(int s=i;s<N-1;++s)
 			multirangerelays[s]=0;
@@ -254,6 +266,10 @@ protected:
 
 	HysteresisProgram* programs;
 
+	void setInputGain(float g);
+	float getInputGain();
+	void setFeedbackLoop(float g);
+	float getFeedbackLoop();
 	void setPreGain(float g);
 	float getPreGain();
 	void setBoost(float n);
@@ -262,14 +278,19 @@ protected:
 	float getParam1();
 	void setPostGain(float g);
 	float getPostGain();
+	void setOutputGain(float g);
+	float getOutputGain();
 
 	void setfilter();
 
 	void resethysteresis();
 
 	hyslip internalhysteresis[2];
+	double delayentity[2];
 
 	Param param;
+
+	bool active;
 
 	boost::mutex mtx;
 };
